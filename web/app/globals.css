@@ -1,0 +1,388 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --navy-dark: #0f172a;
+  --navy-base: #1e293b;
+  --navy-light: #334155;
+  --blue-accent: #3b82f6;
+  --blue-light: #60a5fa;
+  --blue-lighter: #93c5fd;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --card-bg: rgba(30, 41, 59, 0.6);
+  --card-border: rgba(148, 163, 184, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-base) 50%, #1e3a8a 100%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* コンテナ */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* ヘッダー */
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--blue-lighter) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+/* フィルタバー */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  animation: fadeInUp 0.8s ease-out 0.1s backwards;
+}
+
+.filter-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.filter-tag {
+  padding: 0.4rem 0.75rem;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: var(--blue-lighter);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.filter-tag:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--blue-accent);
+  transform: translateY(-1px);
+}
+
+.filter-tag.active {
+  background: var(--blue-accent);
+  border-color: var(--blue-accent);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.clear-filter {
+  padding: 0.4rem 0.9rem;
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.clear-filter:hover {
+  background: rgba(148, 163, 184, 0.2);
+  color: var(--text-primary);
+}
+
+/* 企業リスト */
+.company-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 企業カード - コンパクト版 */
+.company-item {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1.25rem;
+  align-items: center;
+  min-height: 60px;
+}
+
+.company-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--blue-accent);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.company-item:hover {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateX(4px);
+}
+
+.company-item:hover::before {
+  opacity: 1;
+}
+
+/* 締切日セクション（左側） - コンパクト版 */
+.deadline-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.125rem;
+}
+
+.deadline {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--blue-lighter);
+  letter-spacing: -0.01em;
+}
+
+.deadline-time {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* 企業情報セクション（中央） - コンパクト版 */
+.company-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0; /* テキストが長い場合の省略用 */
+}
+
+.company-link {
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.company-link h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.company-link:hover h2 {
+  color: var(--blue-light);
+}
+
+/* 企業情報 */
+.company-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.event-type {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.25rem 0.6rem;
+  background: rgba(59, 130, 246, 0.12);
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* タグ - コンパクト版 */
+.tags {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.35rem;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.tags::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  color: var(--blue-lighter);
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  cursor: default;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.tag:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--blue-accent);
+}
+
+/* アニメーション */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 968px) {
+  .company-item {
+    grid-template-columns: 90px 1fr auto;
+    gap: 0.75rem;
+  }
+
+  .company-link h2 {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 2rem 1rem;
+  }
+
+  .company-item {
+    grid-template-columns: 80px 1fr;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .deadline {
+    font-size: 1.1rem;
+  }
+
+  .deadline-time {
+    font-size: 0.75rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .company-link h2 {
+    font-size: 0.9rem;
+  }
+
+  .tags {
+    display: none; /* タブレット以下ではタグを非表示 */
+  }
+
+  .event-type {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .company-item {
+    grid-template-columns: 70px 1fr;
+    gap: 0.5rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .deadline {
+    font-size: 1rem;
+  }
+
+  .deadline-time {
+    font-size: 0.7rem;
+  }
+
+  .company-link h2 {
+    font-size: 0.85rem;
+  }
+
+  .event-type {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+/* スクロールバーのスタイリング */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--navy-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--navy-light);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-accent);
+}

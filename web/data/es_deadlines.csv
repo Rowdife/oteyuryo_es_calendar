@@ -1,0 +1,11 @@
+id,company_name,ticker,deadline_date,deadline_time,event_type,tags,official_url
+1,トヨタ自動車,7203,2025-03-09,23:59,本選考ES,"まだ間に合う,メーカー,転勤あり",https://www.toyota.co.jp/
+2,三菱UFJフィナンシャル・グループ,8306,2025-03-15,17:00,本選考ES,"まだ間に合う,金融,東京勤務",https://www.mufg.jp/
+3,ソニーグループ,6758,2025-03-20,23:59,インターン,"まだ間に合う,メーカー,グローバル企業",https://www.sony.com/ja/
+4,ソフトバンクグループ,9984,2025-04-01,23:59,本選考ES,"通信・IT,グローバル企業",https://group.softbank/
+5,日立製作所,6501,2025-03-25,17:00,本選考ES,"まだ間に合う,メーカー,転勤あり",https://www.hitachi.co.jp/
+6,ファーストリテイリング,9983,2025-03-18,23:59,本選考ES,"まだ間に合う,小売,グローバル企業",https://www.fastretailing.com/jp/
+7,任天堂,7974,2025-04-10,17:00,本選考ES,メーカー,https://www.nintendo.co.jp/
+8,三井住友フィナンシャルグループ,8316,2025-03-12,17:00,本選考ES,"まだ間に合う,金融,東京勤務",https://www.smfg.co.jp/
+9,三菱商事,8058,2025-03-22,23:59,本選考ES,"まだ間に合う,商社,グローバル企業",https://www.mitsubishicorp.com/jp/ja/
+10,伊藤忠商事,8001,2025-03-28,17:00,本選考ES,"まだ間に合う,商社,グローバル企業,転勤あり",https://www.itochu.co.jp/ja/
