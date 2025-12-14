@@ -13,7 +13,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <a href="#main-content" className="skip-link">
+          メインコンテンツへスキップ
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

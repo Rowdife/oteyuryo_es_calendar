@@ -1,13 +1,17 @@
-import CompanyCalendar from '@/components/CompanyCalendar';
-import { getCompanyDeadlines } from '@/lib/data';
+import PostingList from '@/components/PostingList';
+import { getPostings, getAllTags } from '@/lib/data';
 
 export default function Home() {
-  const companies = getCompanyDeadlines();
+  const postings = getPostings();
+  const tags = getAllTags();
 
   return (
-    <main className="container">
+    <main id="main-content" className="container" role="main">
       <h1>人気企業ESカレンダー</h1>
-      <CompanyCalendar companies={companies} />
+      <p className="page-description" role="doc-subtitle">
+        時価総額上位200社のES締切情報
+      </p>
+      <PostingList postings={postings} tags={tags} />
     </main>
   );
 }
