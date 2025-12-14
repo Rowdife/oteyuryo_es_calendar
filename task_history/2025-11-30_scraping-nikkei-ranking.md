@@ -13,7 +13,7 @@
 
 ### 背景
 - 「上場企業ESシートカレンダー」プロジェクトの第一歩として、ターゲット企業リストが必要
-- 時価総額上位企業は就活生にとって人気企業であり、ES締切情報のニーズが高い
+- 時価総額上位企業は就活生にとって大手・優良企業であり、ES締切情報のニーズが高い
 - 手動での企業リスト作成は非効率なため、自動化が必要
 
 ### スコープ
@@ -165,7 +165,7 @@ export function extractMarketCategory(marketCodes: string[] | undefined): string
 
 ### ファイル構成
 ```
-ninki_es_calendar/
+oteyuryo_es_calendar/
 ├── src/
 │   ├── types.ts           # CompanyData, ScraperConfig などの型定義
 │   ├── parser.ts          # HTMLパース + 市場区分変換ロジック

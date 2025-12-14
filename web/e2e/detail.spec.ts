@@ -44,8 +44,10 @@ test.describe('募集詳細ページ', () => {
   });
 
   test('6. カレンダー追加ボタンがある', async ({ page }) => {
-    const calendarButton = page.locator('.detail-cta-button.secondary');
-    await expect(calendarButton).toBeVisible();
+    const calendarButtons = page.locator('.detail-cta-button.secondary');
+    // Google/Appleの2つのカレンダーボタンがある
+    await expect(calendarButtons).toHaveCount(2);
+    await expect(calendarButtons.first()).toBeVisible();
   });
 
   test('7. 信頼情報（出典・最終確認）が表示されている', async ({ page }) => {

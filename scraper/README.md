@@ -5,7 +5,7 @@
 ## プロジェクト構成
 
 ```
-ninki_es_calendar/
+oteyuryo_es_calendar/
 ├── src/
 │   ├── types.ts           # 型定義
 │   ├── parser.ts          # HTML パーサー

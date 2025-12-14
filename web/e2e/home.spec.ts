@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("人気企業ESカレンダー - ホームページ", () => {
+test.describe("大手・優良企業ESカレンダー - ホームページ", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
 
-  test('1. Webページのタイトルが"人気企業ESカレンダー"', async ({ page }) => {
-    await expect(page).toHaveTitle("人気企業ESカレンダー");
+  test('1. Webページのタイトルが"大手・優良企業ESカレンダー"を含む', async ({ page }) => {
+    await expect(page).toHaveTitle(/大手・優良企業ESカレンダー/);
   });
 
   test("2. リスト形式で募集が表示されている", async ({ page }) => {
@@ -50,9 +50,9 @@ test.describe("人気企業ESカレンダー - ホームページ", () => {
   });
 
   test("6. 公式リンクをクリックしたら外部サイトが開く", async ({ page }) => {
-    // 最初の募集の公式リンクを取得
+    // 最初の募集のESを提出しに行くボタンを取得
     const firstOfficialLink = page
-      .locator('[data-testid="official-link"]')
+      .locator('[data-testid="submit-cta"]')
       .first();
 
     // リンクのhref属性を確認

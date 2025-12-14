@@ -1,5 +1,5 @@
 {
-  "name": "ninki-es-calendar",
+  "name": "oteyuryo-es-calendar",
   "version": "1.0.0",
   "description": "Scraper for top 200 companies by market cap from Nikkei",
   "main": "dist/scraper.js",

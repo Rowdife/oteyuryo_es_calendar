@@ -1,17 +1,18 @@
 import PostingList from '@/components/PostingList';
-import { getPostings, getAllTags } from '@/lib/data';
+import { getPostings, getAllTags, getAllIndustries } from '@/lib/data';
 
 export default function Home() {
   const postings = getPostings();
   const tags = getAllTags();
+  const industries = getAllIndustries();
 
   return (
     <main id="main-content" className="container" role="main">
-      <h1>人気企業ESカレンダー</h1>
+      <h1>大手・優良企業ESカレンダー</h1>
       <p className="page-description" role="doc-subtitle">
-        時価総額上位200社のES締切情報
+        大手企業・優良企業のES締切日を一覧で確認 | 26卒・27卒対応
       </p>
-      <PostingList postings={postings} tags={tags} />
+      <PostingList postings={postings} tags={tags} industries={industries} />
     </main>
   );
 }

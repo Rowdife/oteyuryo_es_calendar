@@ -5,8 +5,9 @@ import {
   Posting,
   getDaysUntilDeadline,
   getUrgencyLevel,
+  getUrgencyText,
+  getUrgencyClass,
   formatDateShort,
-  formatVerifiedAt,
 } from '@/types/posting';
 
 interface PostingCardProps {
@@ -16,26 +17,12 @@ interface PostingCardProps {
 export default function PostingCard({ posting }: PostingCardProps) {
   const daysUntil = getDaysUntilDeadline(posting.deadline_date);
   const urgency = getUrgencyLevel(daysUntil);
-
-  const urgencyText = {
-    expired: '締切済',
-    today: '本日締切',
-    tomorrow: '明日締切',
-    soon: `あと${daysUntil}日`,
-    normal: `あと${daysUntil}日`,
-  }[urgency];
-
-  const urgencyClass = {
-    expired: 'urgency-expired',
-    today: 'urgency-today',
-    tomorrow: 'urgency-tomorrow',
-    soon: 'urgency-soon',
-    normal: '',
-  }[urgency];
+  const urgencyText = getUrgencyText(urgency, daysUntil);
+  const urgencyClassName = getUrgencyClass(urgency);
 
   return (
     <article
-      className={`posting-card ${urgencyClass}`.trim()}
+      className={`posting-card ${urgencyClassName}`.trim()}
       data-testid="posting-card"
     >
       <Link
@@ -47,16 +34,18 @@ export default function PostingCard({ posting }: PostingCardProps) {
         <div className="posting-deadline">
           <time
             dateTime={posting.deadline_date}
-            className={`deadline-date ${urgencyClass}`.trim()}
+            className={`deadline-date ${urgencyClassName}`.trim()}
             data-testid="deadline"
           >
             {formatDateShort(posting.deadline_date)}
           </time>
           {posting.deadline_time && (
-            <span className="deadline-time">{posting.deadline_time}</span>
+            <span className="deadline-time" aria-label="締切時刻">
+              {posting.deadline_time}
+            </span>
           )}
           {urgency !== 'normal' && (
-            <span className={`urgency-badge ${urgencyClass}`}>
+            <span className={`urgency-badge ${urgencyClassName}`}>
               {urgencyText}
             </span>
           )}
@@ -76,55 +65,63 @@ export default function PostingCard({ posting }: PostingCardProps) {
               <span className="target-year">{posting.target_year}</span>
             )}
           </div>
+          {/* 業界・給与情報 */}
+          <div className="posting-quick-info">
+            {posting.industry && (
+              <span className="industry-badge">{posting.industry}</span>
+            )}
+            {posting.salary > 0 && (
+              <span className="salary-badge">
+                月{Math.floor(posting.salary / 10000)}万円
+                {posting.has_bonus && <span className="bonus-indicator">+賞与</span>}
+              </span>
+            )}
+            <span className={`transfer-badge transfer-${posting.transfer_type}`}>
+              {posting.transfer_type}
+            </span>
+          </div>
         </div>
 
-        {/* 右: 信頼情報 + タグ */}
+        {/* 右: タグ + CTA */}
         <div className="posting-trust">
-          <div className="verified-at" title={posting.last_verified_at}>
-            <VerifyIcon />
-            <span>{formatVerifiedAt(posting.last_verified_at)}</span>
-          </div>
           <ul className="tags" aria-label="タグ">
-            {posting.tags.slice(0, 3).map((tag, idx) => (
-              <li key={idx} className="tag" data-testid="tag">
+            {posting.tags.slice(0, 3).map((tag) => (
+              <li key={tag} className="tag" data-testid="tag">
                 {tag}
               </li>
             ))}
           </ul>
+          <a
+            href={posting.official_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="submit-cta submit-cta-inline"
+            aria-label={`${posting.company_name}にESを提出しに行く`}
+            onClick={(e) => e.stopPropagation()}
+            data-testid="submit-cta"
+          >
+            ESを提出
+            <ExternalLinkIcon />
+          </a>
         </div>
       </Link>
 
-      {/* 公式リンク（カード外クリック用） */}
-      <a
-        href={posting.official_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="official-link"
-        aria-label={`${posting.company_name}の公式サイトを開く`}
-        onClick={(e) => e.stopPropagation()}
-        data-testid="official-link"
-      >
-        <ExternalLinkIcon />
-        公式
-      </a>
+      {/* モバイル用CTA (768px以下で表示) */}
+      <div className="posting-card-cta-mobile">
+        <a
+          href={posting.official_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="submit-cta"
+          aria-label={`${posting.company_name}にESを提出しに行く`}
+          onClick={(e) => e.stopPropagation()}
+          data-testid="submit-cta-mobile"
+        >
+          ESを提出しに行く
+          <ExternalLinkIcon />
+        </a>
+      </div>
     </article>
-  );
-}
-
-function VerifyIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden="true"
-    >
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-      <polyline points="22 4 12 14.01 9 11.01" />
-    </svg>
   );
 }
 

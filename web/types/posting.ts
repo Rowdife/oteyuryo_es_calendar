@@ -1,3 +1,6 @@
+/** 転勤タイプ */
+export type TransferType = '全国転勤' | 'エリア限定' | '勤務地固定';
+
 /**
  * 募集要項（Posting）
  * ES締切情報を「募集要項」単位で管理する
@@ -14,7 +17,25 @@ export interface Posting {
   deadline_time: string;
   /** イベント種別: 本選考ES / インターン */
   event_type: string;
-  /** タグ（業界、職種カテゴリなど） */
+  /** 業界ID */
+  industry_id: string;
+  /** 業界名（industries.csvから解決） */
+  industry: string;
+  /** 職種（公式採用ページの記載そのまま） */
+  job_type: string;
+  /** 初任給（月額、円） */
+  salary: number;
+  /** 賞与有無 */
+  has_bonus: boolean;
+  /** 給与備考（みなし残業、諸手当など） */
+  salary_notes: string;
+  /** 転勤タイプ */
+  transfer_type: TransferType;
+  /** 年間有給休暇日数 */
+  annual_paid_leave_days: number;
+  /** 福利厚生（benefits.csvから解決） */
+  benefits: string[];
+  /** タグ（tags.csvから解決） */
   tags: string[];
   /** 公式サイトURL（出典） */
   official_url: string;
@@ -35,6 +56,9 @@ export type PostingListItem = Pick<
   | 'deadline_date'
   | 'deadline_time'
   | 'event_type'
+  | 'industry'
+  | 'salary'
+  | 'has_bonus'
   | 'tags'
   | 'official_url'
   | 'last_verified_at'
@@ -52,17 +76,39 @@ export function getDaysUntilDeadline(deadlineDate: string): number {
   return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
+/** 緊急度レベル型 */
+export type UrgencyLevel = 'expired' | 'today' | 'tomorrow' | 'soon' | 'normal';
+
 /**
  * 緊急度レベルを取得
  */
-export function getUrgencyLevel(
-  daysUntil: number
-): 'expired' | 'today' | 'tomorrow' | 'soon' | 'normal' {
+export function getUrgencyLevel(daysUntil: number): UrgencyLevel {
   if (daysUntil < 0) return 'expired';
   if (daysUntil === 0) return 'today';
   if (daysUntil === 1) return 'tomorrow';
   if (daysUntil <= 3) return 'soon';
   return 'normal';
+}
+
+/**
+ * 緊急度に応じた表示テキストを取得
+ */
+export function getUrgencyText(urgency: UrgencyLevel, daysUntil: number): string {
+  const textMap: Record<UrgencyLevel, string> = {
+    expired: '締切済',
+    today: '本日締切',
+    tomorrow: '明日締切',
+    soon: `あと${daysUntil}日`,
+    normal: `あと${daysUntil}日`,
+  };
+  return textMap[urgency];
+}
+
+/**
+ * 緊急度に応じたCSSクラス名を取得
+ */
+export function getUrgencyClass(urgency: UrgencyLevel): string {
+  return `urgency-${urgency}`;
 }
 
 /**

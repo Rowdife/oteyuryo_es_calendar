@@ -62,7 +62,48 @@ h1 {
   animation: fadeInDown 0.8s ease-out 0.1s backwards;
 }
 
-/* フィルタバー */
+/* フィルタコンテナ */
+.filter-container {
+  margin-top: 2rem;
+  padding: 1rem 1.25rem;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  animation: fadeInUp 0.8s ease-out 0.1s backwards;
+}
+
+.filter-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.filter-section:last-of-type {
+  border-bottom: none;
+}
+
+.filter-section-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  min-width: 50px;
+  padding-top: 0.35rem;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+/* 後方互換性のため残す */
 .filter-bar {
   display: flex;
   align-items: center;
@@ -132,6 +173,37 @@ h1 {
 .clear-filter:hover {
   background: rgba(148, 163, 184, 0.2);
   color: var(--text-primary);
+}
+
+/* 締切済み表示トグル */
+.expired-toggle {
+  padding: 0.4rem 0.75rem;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.expired-toggle:hover {
+  background: rgba(148, 163, 184, 0.15);
+  border-color: rgba(148, 163, 184, 0.3);
+  color: var(--text-secondary);
+}
+
+.expired-toggle.active {
+  background: rgba(148, 163, 184, 0.2);
+  border-color: rgba(148, 163, 184, 0.4);
+  color: var(--text-primary);
+}
+
+.expired-toggle:focus-visible {
+  box-shadow: var(--focus-ring);
 }
 
 /* 企業リスト */
@@ -735,67 +807,91 @@ h1 {
   font-weight: 500;
 }
 
-/* Posting trust section */
+/* Posting trust section (tags + CTA) */
 .posting-trust {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.5rem;
-}
-
-.verified-at {
-  display: flex;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.verified-at svg {
-  color: var(--blue-lighter);
-  flex-shrink: 0;
+  gap: 0.75rem;
 }
 
 .posting-trust .tags {
   display: flex;
   gap: 0.25rem;
-  justify-content: flex-end;
 }
 
-/* Official link button */
-.official-link {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  display: flex;
+/* ===== Submit CTA Button ===== */
+
+.submit-cta-inline {
+  display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.35rem 0.6rem;
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.3);
-  border-radius: 4px;
-  color: var(--blue-lighter);
-  font-size: 0.7rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  opacity: 0;
-}
-
-.posting-card:hover .official-link {
-  opacity: 1;
-}
-
-.official-link:hover {
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
   background: var(--blue-accent);
-  color: white;
-  border-color: var(--blue-accent);
+  color: var(--text-primary);
+  border: 1px solid var(--blue-accent);
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.official-link:focus-visible {
-  opacity: 1;
+.submit-cta-inline:hover {
+  background: var(--blue-light);
+  border-color: var(--blue-light);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+}
+
+.submit-cta-inline:focus-visible {
   box-shadow: var(--focus-ring);
+}
+
+.submit-cta-inline svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* モバイル用CTA (デフォルト非表示) */
+.posting-card-cta-mobile {
+  display: none;
+}
+
+/* 通常のCTAボタン (モバイル用) */
+.submit-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  background: var(--blue-accent);
+  color: var(--text-primary);
+  border: 1px solid var(--blue-accent);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submit-cta:hover {
+  background: var(--blue-light);
+  border-color: var(--blue-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.submit-cta:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+.submit-cta svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* Empty state */
@@ -812,6 +908,12 @@ h1 {
 }
 
 /* Responsive adjustments for posting card */
+@media (max-width: 968px) {
+  .posting-card-link {
+    grid-template-columns: 90px 1fr auto;
+  }
+}
+
 @media (max-width: 768px) {
   .posting-card-link {
     grid-template-columns: 80px 1fr;
@@ -821,6 +923,18 @@ h1 {
 
   .posting-trust {
     display: none;
+  }
+
+  .posting-card-cta-mobile {
+    display: flex;
+    padding: 0.5rem 0.75rem 0.6rem;
+    border-top: 1px solid var(--card-border);
+    justify-content: stretch;
+  }
+
+  .posting-card-cta-mobile .submit-cta {
+    width: 100%;
+    justify-content: center;
   }
 
   .deadline-date {
@@ -835,11 +949,11 @@ h1 {
     font-size: 0.8rem;
   }
 
-  .official-link {
-    opacity: 1;
-    top: auto;
-    bottom: 0.5rem;
-    right: 0.5rem;
+  .submit-cta {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -865,6 +979,15 @@ h1 {
   .posting-deadline .urgency-badge {
     font-size: 0.6rem;
     padding: 0.15rem 0.3rem;
+  }
+
+  .posting-card-cta-mobile {
+    padding: 0.4rem 0.6rem 0.5rem;
+  }
+
+  .submit-cta {
+    padding: 0.65rem 0.75rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -1067,6 +1190,16 @@ h1 {
   box-shadow: var(--focus-ring);
 }
 
+.calendar-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.calendar-buttons .detail-cta-button {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
 /* Section Titles */
 .detail-section-title {
   font-size: 1rem;
@@ -1259,6 +1392,15 @@ h1 {
     justify-content: center;
     min-width: 140px;
   }
+
+  .calendar-buttons {
+    width: 100%;
+  }
+
+  .calendar-buttons .detail-cta-button {
+    flex: 1;
+    min-width: auto;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1280,5 +1422,175 @@ h1 {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
+  }
+}
+
+/* ===== Quick Info (Industry/Salary) in PostingCard ===== */
+.posting-quick-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.industry-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #86efac;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.salary-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  background: rgba(234, 179, 8, 0.12);
+  border: 1px solid rgba(234, 179, 8, 0.25);
+  color: #fde047;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.bonus-indicator {
+  font-size: 0.65rem;
+  color: #86efac;
+  font-weight: 600;
+}
+
+/* ===== Detail Page New Sections ===== */
+.detail-overview-section,
+.detail-compensation-section,
+.detail-workstyle-section {
+  margin-bottom: 2rem;
+}
+
+.detail-dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.detail-dl-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-dl-item-wide {
+  grid-column: 1 / -1;
+}
+
+.detail-dl-item dt {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-dl-item dd {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+/* Industry Badge in Detail Page */
+.industry-badge-detail {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.6rem;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+/* Transfer Type Badges */
+.transfer-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.transfer-badge.transfer-全国転勤 {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.transfer-badge.transfer-エリア限定 {
+  background: rgba(234, 179, 8, 0.15);
+  color: #fde047;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.transfer-badge.transfer-勤務地固定 {
+  background: rgba(34, 197, 94, 0.15);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* Salary Notes (Warning style) */
+.salary-notes {
+  font-size: 0.85rem;
+  color: var(--urgent-yellow);
+  padding: 0.5rem 0.75rem;
+  background: rgba(234, 179, 8, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid var(--urgent-yellow);
+}
+
+/* Benefits List */
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.benefit-chip {
+  padding: 0.3rem 0.6rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--blue-lighter);
+}
+
+/* Responsive adjustments for quick info */
+@media (max-width: 768px) {
+  .posting-quick-info {
+    display: none;
+  }
+
+  .detail-dl {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-dl-item dd {
+    font-size: 0.9rem;
+  }
+
+  .transfer-badge,
+  .industry-badge-detail {
+    font-size: 0.8rem;
   }
 }

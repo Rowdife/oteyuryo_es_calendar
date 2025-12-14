@@ -1,11 +1,119 @@
 import fs from 'fs';
 import path from 'path';
-import { Posting } from '@/types/posting';
+import { Posting, TransferType } from '@/types/posting';
+
+// マスタデータのキャッシュ
+let tagCache: Map<string, string> | null = null;
+let industryCache: Map<string, string> | null = null;
+let benefitCache: Map<string, string> | null = null;
+let postingsCache: Posting[] | null = null;
 
 /**
- * CSVを読み込んでPosting一覧を返す
+ * tags.csvからタグマスタを読み込む
+ */
+function loadTagMaster(): Map<string, string> {
+  if (tagCache) return tagCache;
+
+  const filePath = path.join(process.cwd(), 'data', 'tags.csv');
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+  const lines = fileContent.trim().split('\n');
+  tagCache = new Map<string, string>();
+
+  lines.slice(1).forEach((line) => {
+    const [id, name] = line.split(',');
+    if (id && name) {
+      tagCache!.set(id.trim(), name.trim());
+    }
+  });
+
+  return tagCache;
+}
+
+/**
+ * industries.csvから業界マスタを読み込む
+ */
+function loadIndustryMaster(): Map<string, string> {
+  if (industryCache) return industryCache;
+
+  const filePath = path.join(process.cwd(), 'data', 'industries.csv');
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+  const lines = fileContent.trim().split('\n');
+  industryCache = new Map<string, string>();
+
+  lines.slice(1).forEach((line) => {
+    const [id, name] = line.split(',');
+    if (id && name) {
+      industryCache!.set(id.trim(), name.trim());
+    }
+  });
+
+  return industryCache;
+}
+
+/**
+ * benefits.csvから福利厚生マスタを読み込む
+ */
+function loadBenefitMaster(): Map<string, string> {
+  if (benefitCache) return benefitCache;
+
+  const filePath = path.join(process.cwd(), 'data', 'benefits.csv');
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+
+  const lines = fileContent.trim().split('\n');
+  benefitCache = new Map<string, string>();
+
+  lines.slice(1).forEach((line) => {
+    const [id, name] = line.split(',');
+    if (id && name) {
+      benefitCache!.set(id.trim(), name.trim());
+    }
+  });
+
+  return benefitCache;
+}
+
+/**
+ * tag_idsをタグ名の配列に変換
+ */
+function resolveTagIds(tagIds: string): string[] {
+  const tagMaster = loadTagMaster();
+  return tagIds
+    .split(',')
+    .map((id) => id.trim())
+    .filter((id) => id !== '')
+    .map((id) => tagMaster.get(id) || id)
+    .filter((name) => name !== '');
+}
+
+/**
+ * benefit_idsを福利厚生名の配列に変換
+ */
+function resolveBenefitIds(benefitIds: string): string[] {
+  const benefitMaster = loadBenefitMaster();
+  return benefitIds
+    .split(',')
+    .map((id) => id.trim())
+    .filter((id) => id !== '')
+    .map((id) => benefitMaster.get(id) || id)
+    .filter((name) => name !== '');
+}
+
+/**
+ * industry_idを業界名に変換
+ */
+function resolveIndustryId(industryId: string): string {
+  const industryMaster = loadIndustryMaster();
+  return industryMaster.get(industryId.trim()) || '';
+}
+
+/**
+ * CSVを読み込んでPosting一覧を返す（キャッシュ付き）
  */
 export function getPostings(): Posting[] {
+  if (postingsCache) return postingsCache;
+
   const filePath = path.join(process.cwd(), 'data', 'es_deadlines.csv');
   const fileContent = fs.readFileSync(filePath, 'utf-8');
 
@@ -28,9 +136,16 @@ export function getPostings(): Posting[] {
       deadline_date: data.deadline_date,
       deadline_time: data.deadline_time,
       event_type: data.event_type,
-      tags: data.tags
-        .split(',')
-        .filter((tag) => tag.trim() !== ''),
+      industry_id: data.industry_id || '',
+      industry: resolveIndustryId(data.industry_id || ''),
+      job_type: data.job_type || '',
+      salary: parseInt(data.salary, 10) || 0,
+      has_bonus: data.has_bonus === 'true',
+      salary_notes: data.salary_notes || '',
+      transfer_type: (data.transfer_type || '全国転勤') as TransferType,
+      annual_paid_leave_days: parseInt(data.annual_paid_leave_days, 10) || 0,
+      benefits: resolveBenefitIds(data.benefit_ids || ''),
+      tags: resolveTagIds(data.tag_ids || ''),
       official_url: data.official_url,
       last_verified_at: data.last_verified_at || new Date().toISOString(),
       target_year: data.target_year || undefined,
@@ -38,11 +153,13 @@ export function getPostings(): Posting[] {
   });
 
   // 締切日でソート（昇順：早い日付から）
-  return postings.sort((a, b) => {
+  postingsCache = postings.sort((a, b) => {
     const dateA = a.deadline_date;
     const dateB = b.deadline_date;
     return dateA.localeCompare(dateB);
   });
+
+  return postingsCache;
 }
 
 /**
@@ -67,15 +184,27 @@ export function getPostingsByCompany(
 }
 
 /**
- * 全タグを取得
+ * 全タグを取得（tags.csvから）
  */
 export function getAllTags(): string[] {
-  const postings = getPostings();
-  const tagSet = new Set<string>();
-  postings.forEach((p) => {
-    p.tags.forEach((tag) => tagSet.add(tag));
-  });
-  return Array.from(tagSet).sort();
+  const tagMaster = loadTagMaster();
+  return Array.from(tagMaster.values()).sort();
+}
+
+/**
+ * 全業界を取得（industries.csvから）
+ */
+export function getAllIndustries(): string[] {
+  const industryMaster = loadIndustryMaster();
+  return Array.from(industryMaster.values());
+}
+
+/**
+ * 全福利厚生を取得（benefits.csvから）
+ */
+export function getAllBenefits(): string[] {
+  const benefitMaster = loadBenefitMaster();
+  return Array.from(benefitMaster.values());
 }
 
 /**

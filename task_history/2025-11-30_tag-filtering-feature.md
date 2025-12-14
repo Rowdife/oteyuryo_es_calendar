@@ -9,7 +9,7 @@
 ## 📌 タスクの概要
 
 ### 目的
-人気企業ESカレンダーにタグによる絞り込み機能を追加し、ユーザーが業界や条件で企業を素早くフィルタリングできるようにする。
+大手・優良企業ESカレンダーにタグによる絞り込み機能を追加し、ユーザーが業界や条件で企業を素早くフィルタリングできるようにする。
 
 ### 背景
 - 企業リストが増えると、目的の企業を探すのが困難になる
@@ -136,7 +136,7 @@ export default function Home() {
 
   return (
     <main className="container">
-      <h1>人気企業ESカレンダー</h1>
+      <h1>大手・優良企業ESカレンダー</h1>
       <CompanyCalendar companies={companies} />
     </main>
   );
@@ -172,7 +172,7 @@ export default function Home() {
 ### ファイル構成
 
 ```
-ninki_es_calendar/web/
+oteyuryo_es_calendar/web/
 ├── app/
 │   ├── page.tsx                      # Server Component（データ取得）
 │   └── globals.css                   # FilterBar の CSS 追加
