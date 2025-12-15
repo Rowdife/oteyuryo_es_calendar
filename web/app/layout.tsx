@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-const siteName = "大手・優良企業ESカレンダー";
+const siteName = "大手企業・優良企業ESカレンダー";
 const siteDescription =
   "大手企業・優良企業のES（エントリーシート）締切日を一覧・カレンダー形式で確認できる就活生向けサービス。26卒・27卒対応。ホワイト企業や人気企業のES締切を見逃さずに管理しよう。";
 const siteUrl = "https://es-calendar.example.com"; // TODO: 本番URLに変更

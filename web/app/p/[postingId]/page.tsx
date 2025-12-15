@@ -18,7 +18,7 @@ interface PostingDetailPageProps {
   }>;
 }
 
-const siteName = "大手・優良企業ESカレンダー";
+const siteName = "大手企業・優良企業ESカレンダー";
 const siteUrl = "https://es-calendar.example.com"; // TODO: 本番URLに変更
 
 export async function generateMetadata({
@@ -33,8 +33,16 @@ export async function generateMetadata({
     };
   }
 
-  const title = `${posting.company_name} ${posting.posting_title} ES締切【${formatDateLong(posting.deadline_date)}】`;
-  const description = `${posting.company_name}の${posting.posting_title}のES締切日は${formatDateLong(posting.deadline_date)}${posting.deadline_time ? ` ${posting.deadline_time}` : ""}です。${posting.industry ? `業界: ${posting.industry}。` : ""}${posting.target_year ? `${posting.target_year}対象。` : ""}大手・優良企業のES締切を見逃さずに管理しよう。`;
+  const title = `${posting.company_name} ${
+    posting.posting_title
+  } ES締切【${formatDateLong(posting.deadline_date)}】`;
+  const description = `${posting.company_name}の${
+    posting.posting_title
+  }のES締切日は${formatDateLong(posting.deadline_date)}${
+    posting.deadline_time ? ` ${posting.deadline_time}` : ""
+  }です。${posting.industry ? `業界: ${posting.industry}。` : ""}${
+    posting.target_year ? `${posting.target_year}対象。` : ""
+  }大手・優良企業のES締切を見逃さずに管理しよう。`;
 
   return {
     title,

@@ -1,12 +1,14 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("大手・優良企業ESカレンダー - ホームページ", () => {
+test.describe("大手企業・優良企業ESカレンダー - ホームページ", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
 
-  test('1. Webページのタイトルが"大手・優良企業ESカレンダー"を含む', async ({ page }) => {
-    await expect(page).toHaveTitle(/大手・優良企業ESカレンダー/);
+  test('1. Webページのタイトルが"大手企業・優良企業ESカレンダー"を含む', async ({
+    page,
+  }) => {
+    await expect(page).toHaveTitle(/大手企業・優良企業ESカレンダー/);
   });
 
   test("2. リスト形式で募集が表示されている", async ({ page }) => {
